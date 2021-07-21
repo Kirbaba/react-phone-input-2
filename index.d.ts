@@ -78,6 +78,7 @@ declare module "react-phone-input-2" {
     regions?: string | string[];
 
     inputProps?: object;
+    inputRef?: any;
     localization?: object;
     masks?: object;
     areaCodes?: object;

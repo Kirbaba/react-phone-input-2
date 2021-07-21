@@ -67,6 +67,12 @@ class PhoneInput extends React.Component {
     ]),
 
     inputProps: PropTypes.object,
+    inputRef:  PropTypes.oneOfType([
+       // Either a function
+       PropTypes.func,
+       // Or the instance of a DOM native element (see the note about SSR)
+       PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+     ]),
     localization: PropTypes.object,
     masks: PropTypes.object,
     areaCodes: PropTypes.object,
@@ -140,6 +146,7 @@ class PhoneInput extends React.Component {
     regions: '',
 
     inputProps: {},
+    inputRef: undefined,
     localization: {},
 
     masks: null,
@@ -460,10 +467,12 @@ class PhoneInput extends React.Component {
   // Put the cursor to the end of the input (usually after a focus event)
   cursorToEnd = () => {
     const input = this.numberInputRef;
-    input.focus();
-    let len = input.value.length;
-    if (input.value.charAt(len-1)=== ')') len = len-1;
-    input.setSelectionRange(len, len);
+    if (input) {
+      // input.focus();
+      // let len = input.value.length;
+      // if (input.value.charAt(len-1)=== ')') len = len-1;
+      // input.setSelectionRange(len, len);
+    }
   }
 
   getElement = (index) => {
@@ -950,7 +959,7 @@ class PhoneInput extends React.Component {
           onBlur={this.handleInputBlur}
           onCopy={this.handleInputCopy}
           value={formattedNumber}
-          ref={el => this.numberInputRef = el}
+          ref={el => this.numberInputRef = this.props.inputRef ? this.props.inputRef : el}
           onKeyDown={this.handleInputKeyDown}
           placeholder={this.props.placeholder}
           disabled={this.props.disabled}
