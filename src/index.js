@@ -959,7 +959,10 @@ class PhoneInput extends React.Component {
           onBlur={this.handleInputBlur}
           onCopy={this.handleInputCopy}
           value={formattedNumber}
-          ref={el => this.numberInputRef = this.props.inputRef ? this.props.inputRef : el}
+          ref={el => {
+            this.numberInputRef = this.props.inputRef ? this.props.inputRef : el;
+            this.props.inputProps.ref(el);
+          }}
           onKeyDown={this.handleInputKeyDown}
           placeholder={this.props.placeholder}
           disabled={this.props.disabled}
