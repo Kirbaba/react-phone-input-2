@@ -466,13 +466,15 @@ class PhoneInput extends React.Component {
 
   // Put the cursor to the end of the input (usually after a focus event)
   cursorToEnd = () => {
+    setTimeout(() => {
+      if (input) {
+        input.focus();
+        let len = input.value.length;
+        if (input.value.charAt(len-1)=== ')') len = len-1;
+        input.setSelectionRange(len, len);
+      }
+    }, 100);
     const input = this.numberInputRef;
-    if (input) {
-      // input.focus();
-      // let len = input.value.length;
-      // if (input.value.charAt(len-1)=== ')') len = len-1;
-      // input.setSelectionRange(len, len);
-    }
   }
 
   getElement = (index) => {
@@ -587,13 +589,14 @@ class PhoneInput extends React.Component {
       }
 
       const lastChar = formattedNumber.charAt(formattedNumber.length - 1);
-
-      if (lastChar == ')') {
-        this.numberInputRef.setSelectionRange(formattedNumber.length - 1, formattedNumber.length - 1);
-      }
-      else if (caretPosition > 0 && oldFormattedText.length >= formattedNumber.length) {
-        this.numberInputRef.setSelectionRange(caretPosition, caretPosition);
-      }
+      setTimeout(() => {
+        if (lastChar == ')') {
+          this.numberInputRef.setSelectionRange(formattedNumber.length - 1, formattedNumber.length - 1);
+        }
+        else if (caretPosition > 0 && oldFormattedText.length >= formattedNumber.length) {
+          this.numberInputRef.setSelectionRange(caretPosition, caretPosition);
+        }
+      }, 100);
 
       if (onChange) onChange(formattedNumber.replace(/[^0-9]+/g,''), this.getCountryData(), e, formattedNumber);
     });
@@ -606,7 +609,10 @@ class PhoneInput extends React.Component {
 
   handleDoubleClick = (e) => {
     const len = e.target.value.length;
-    e.target.setSelectionRange(0, len);
+    setTimeout(() => {
+      e.target.setSelectionRange(0, len);
+    }, 100);
+
   }
 
   handleFlagItemClick = (country, e) => {
